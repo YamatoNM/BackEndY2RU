@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    # Lecția 7: host/port externalizate și ele — implicit localhost (pentru rularea
+    # directă, cu Postgres instalat pe laptop), dar docker-compose.yml suprascrie
+    # APP_DB_HOST cu numele serviciului ("postgres"), fără nicio schimbare de cod.
+    url: jdbc:postgresql://${APP_DB_HOST:localhost}:${APP_DB_PORT:5432}/e-commerce
+    username: postgres
+    password: ${APP_DB_PASSWORD:2302}
+
+  # Memurai (pe Windows) sau Redis, pe portul 6379.
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${APP_REDIS_HOST:localhost}
+      port: ${APP_REDIS_PORT:6379}
+
+app:
+  jwt:
+    secret: ${APP_JWT_SECRET:impact-academies-dev-secret-key-do-not-use-in-production-0123456789}
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:*}
+
+logging:
+  level:
+    md.impact.ecommerce: DEBUG
