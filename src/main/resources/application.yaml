@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: ecommerce-backend
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate.format_sql: true
+
+app:
+  jwt:
+    expiration-minutes: 120
+  discount:
+    category-name: Accesorii
+    percentage: 15
+    
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+logging:
+  level:
+    md.impact.ecommerce: INFO

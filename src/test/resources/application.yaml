@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: ecommerce-backend
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  cache:
+    type: simple
+
+app:
+  jwt:
+    secret: test-secret-key-only-for-unit-tests-please-0123456789-abcdefghij
+    expiration-minutes: 60
+  discount:
+    category-name: Test Cat B
+    percentage: 10
+  cors:
+    allowed-origins: "*"
+
+logging:
+  level:
+    md.impact.ecommerce: WARN
