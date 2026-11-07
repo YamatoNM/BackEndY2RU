@@ -1,4 +1,4 @@
-package md.impact.ecommerce.services;
+package md.impact.ecommerce;
 
 import md.impact.ecommerce.dtos.AuthResponse;
 import md.impact.ecommerce.dtos.LoginRequest;
@@ -9,6 +9,7 @@ import md.impact.ecommerce.entities.User;
 import md.impact.ecommerce.exceptions.ApiException;
 import md.impact.ecommerce.repositories.UserRepository;
 import md.impact.ecommerce.security.JwtService;
+import md.impact.ecommerce.services.AuthService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -58,6 +59,11 @@ when(jwtService.generate(any(User.class))).thenReturn("jwt-fals");
                 "$2b$10$hash-fals-pentru-test");
         assertThat(captor.getValue().getPasswordHash()).isNotEqualTo(
                req.password());
+        AuthResponse response = authService.register(req);
+        assertThat(response.email()).isEqualTo("elev@impact.md");
+        assertThat(response.role()).isEqualTo("USER");
+        assertThat(response.token()).isEqualTo("jwt-false");
+
 
 
     }
