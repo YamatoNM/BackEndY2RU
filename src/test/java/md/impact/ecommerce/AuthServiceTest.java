@@ -67,6 +67,38 @@ when(jwtService.generate(any(User.class))).thenReturn("jwt-fals");
 
 
     }
+    @Test
+    void register_rejects_an_email_that_already_exists(){
+var req = new RegisterRequest("already@impact.md",
+        "anything");
+when(userRepository.existsByEmail(req.email())).thenReturn(true);
+assertThatThrownBy(() -> authService.register(req))
+        .isInstanceOf(ApiException.class)
+        .extracting(e ->
+                ((ApiException) e).getStatus())
+        .isEqualTo(HttpStatus.CONFLICT);
 
+verify(userRepository, never()).save(any());
+
+    }
+    @Test
+    void login_with_correct_password_returns_a_token(){
+        var req = new LoginRequest(
+                "user@impact.md", "user123");
+        User user = mock(User.class);
+        when(user.getEmail()).thenReturn(req.email());
+        when(user.getPasswordHash()).thenReturn("hash-saved");
+        when(user.getRole()).thenReturn(Role.USER);
+        when(userRepository.findByEmail(req.email()))
+                .thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(req.password(),
+                "hash-saved")).thenReturn(true);
+
+        when(jwtService.generate(user)).thenReturn("jwt-false");
+        AuthResponse response = authService.login(req);
+
+        assertThat(response.token()).isEqualTo("jwt-fals");
+        assertThat(response.role()).isEqualTo("USER");
+    }
 
 }
